@@ -1,3 +1,7 @@
+# Version ```0.0.1```
+
+# Version ```0.0.2-SNAPSHOT``` In_Progress
+
 # Spring "Restservice"
 
 This is a sample Java / Maven / Spring Boot (version 1.5.6) application that can be used as a starter for creating a restservice.
