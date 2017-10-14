@@ -109,15 +109,4 @@ public class SearchControllerBeanTest{
 	public void testValueRequiredexceptionHandler(){
 		searchRestService.valueRequiredexceptionHandler(new ValueNotFoundException(""));
 	}*/
-	
-	@Test
-	public void testValueRequiredexceptionHandlerErrorCode(){
-			ResponseEntity<ErrorResponse> valueRequiredexceptionHandler = searchRestService.valueRequiredexceptionHandler(new ValueNotFoundException("Bad Request"));
-			ErrorResponse body = valueRequiredexceptionHandler.getBody();
-			Assert.assertEquals(400, body.getErrorCode());
-			Assert.assertEquals("Bad Request", body.getMessage());
-			System.err.println(body.toString());
-	}
-	
-	
 }
