@@ -96,8 +96,6 @@ public class SearchRestService {
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 	
-	
-	
 	@ExceptionHandler(DirectoryNotFoundException.class)
 	public ResponseEntity<ErrorResponse> directoryNotFoundexceptionHandler(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
@@ -105,6 +103,5 @@ public class SearchRestService {
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
-	
 	
 }
