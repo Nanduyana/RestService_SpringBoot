@@ -1,11 +1,14 @@
 package com.search.words.directories.service.test;
 
 
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,7 +23,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.search.words.directories.SearchApplication;
 import com.search.words.directories.interfaces.SearchDirectories;
 import com.search.words.directories.service.SearchRestService;
-import com.search.words.directories.service.exception.PathNotFoundException;
+import com.search.words.directories.service.exception.DirectoryNotFoundException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SearchApplication.class})
@@ -41,6 +44,18 @@ public class SearchBeanTest{
 	@InjectMocks
     private SearchRestService searchRestService;
 	
+	URL url;
+	File file;
+	
+	
+	/**
+	 * this setup class is used to test the classes by putting the required files in test/resources folder
+	 */
+	@Before
+	public void setup(){
+		url = this.getClass().getResource("/");
+		file = new File(url.getFile());
+	}
 	
 	/*@Test
 	public void testMain(){
@@ -54,7 +69,7 @@ public class SearchBeanTest{
 	@Test
 	public void testSearch() {
 		Map<String, List<String>> finalMap=new HashMap<>();
-		Map<String, List<String>> search = searchDirectories.search(env.getProperty("path.to.search"), "Nandu","_","txt",finalMap);
+		Map<String, List<String>> search = searchDirectories.search("D:\\thread", "Nandu","_","txt",finalMap);
 		Assert.assertEquals(1,search.size());
 	}
 	
@@ -73,21 +88,7 @@ public class SearchBeanTest{
 		try{
 			searchDirectories.search(env.getProperty("path.to.search"), null, "_","txt",finalMap);
 		}catch(Exception e){
-			Assert.assertEquals("Word is Required to Search", e.getMessage());
-		}
-	}
-	
-	/**
-	 * this test case is for not providing the path - this is exceptional case
-	 * in case path is not provided during the request the default value from application.properties is picked
-	 */
-	@Test
-	public void testSearchPathNotExist() {
-		Map<String, List<String>> finalMap=new HashMap<>();
-		try{
-			searchDirectories.search(null, "Nandu","_","txt",finalMap);
-		}catch(Exception e){
-			Assert.assertEquals("Path is Required to Search", e.getMessage());
+			Assert.assertEquals(null, e.getMessage());
 		}
 	}
 	
@@ -124,42 +125,20 @@ public class SearchBeanTest{
 	/**
 	 * this test case is for directory doesnt exist
 	 */
-	@Test
+	@Test(expected=DirectoryNotFoundException.class)
 	public void testDirectoryDoesNotExist() {
 		Map<String, List<String>> finalMap=new HashMap<>();
-		Map<String, List<String>> search = searchDirectories.search("D:\\adjfadj", "Nandu",",","txt",finalMap);
-		Assert.assertEquals(null, search);
-	}
-	
-	
-	@Test(expected=PathNotFoundException.class)
-	public void testPathNotFoundException() {
-		Map<String, List<String>> finalMap=new HashMap<>();
-		Map<String, List<String>> search = searchDirectories.search(null, "Nandu",",","txt",finalMap);
-	}
-	
-	
-	@Test
-	public void testPathNotFoundExceptionMessage() {
-		Map<String, List<String>> finalMap=new HashMap<>();
-		try{
-			searchDirectories.search(null, "Nandu",",","txt",finalMap);
-		}catch(PathNotFoundException pne){
-			Assert.assertEquals("Path is Required to Search", pne.getErrorMessage());
-		}
+		searchDirectories.search("D:\\adjfadj", "Nandu",",","txt",finalMap);
 	}
 	
 	@Test
-	public void testPathNotFoundExceptionTwo() {
+	public void testMessageDirectoryDoesNotExist() {
 		Map<String, List<String>> finalMap=new HashMap<>();
 		try{
-		searchDirectories.search(null, "Nandu",",","txt",finalMap);
-		}catch(PathNotFoundException pne){
-			Assert.assertEquals("Path is Required to Search", pne.getErrorMessage());
+				searchDirectories.search("D:\\adjfadj", "Nandu",",","txt",finalMap);
+		}catch(DirectoryNotFoundException dnfe){
+			Assert.assertEquals("Directory Does not Exist, please provide a valid Directory", dnfe.getMessage());
 		}
 	}
-	
-	//PathNotFoundException
-	
 	
 }

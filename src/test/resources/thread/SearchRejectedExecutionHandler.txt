@@ -1,0 +1,18 @@
+package com.search.words.directories.threads;
+
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class SearchRejectedExecutionHandler  implements RejectedExecutionHandler{
+	
+	private final Logger log = LoggerFactory.getLogger(this.getClass());	
+	//Veda
+	@Override
+	public void rejectedExecution(Runnable runnable, ThreadPoolExecutor executor) {
+		log.debug(runnable.toString() + " : been rejected ! ");
+	}
+
+}

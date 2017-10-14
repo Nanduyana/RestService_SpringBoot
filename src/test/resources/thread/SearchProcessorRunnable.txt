@@ -1,0 +1,78 @@
+package com.search.words.directories.threads;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class SearchProcessorRunnable implements Runnable{
+	
+	String path;
+	String wordToSearch;
+	
+	public SearchProcessorRunnable() {}
+	//Veda
+	public SearchProcessorRunnable(String path,String wordToSearch) {
+		this.path=path;
+		this.wordToSearch=wordToSearch;
+	}
+	
+	@Override
+	public void run() {
+		
+		HashMap<String,String> search = this.search(path, wordToSearch);
+		
+	}
+	
+	public HashMap<String,String> search(String path,String wordToSearch) {
+		ArrayList<String> list = new ArrayList<String>(); // list of files.
+		HashMap<String,String> listOfFilesWordMatched= new  HashMap<String,String>();
+		File dir = new File(path); // directory = target directory.
+		if (dir.exists()) // Directory exists then proceed.
+		{
+			Pattern p = Pattern.compile(wordToSearch); // keyword = keyword to search in files.
+			if (dir.listFiles() != null) {
+				for (File f : dir.listFiles())
+				{
+					if (f != null) {
+						if (f.isDirectory()) {
+							search(f.getAbsolutePath(),wordToSearch);
+						}
+						if (!f.isFile()) continue;
+						String fileName = f.getName();
+						if (fileName.substring(fileName.lastIndexOf(".") + 1).equals("txt")) {
+							if (f.getName().lastIndexOf(".") != -1) {
+								try {
+									FileInputStream fis = new FileInputStream(f);
+									byte[] data = new byte[fis.available()];
+									fis.read(data);
+									String text = new String(data);
+									Matcher m = p.matcher(text);
+									if (m.find()) {
+										list.add(f.getName()); // add file to found-keyword list
+										listOfFilesWordMatched.put(f.getName(), f.getAbsolutePath());
+									}
+									fis.close();
+								} catch (Exception e) {
+									System.out.println("\n\t Error processing file : "+ f.getName());
+								}
+							}
+						}
+					}
+				}
+				if (list != null && list.size() > 0) {
+					System.out.print("\n\t List : " + list); // list of files containing keyword
+				}
+			}
+		}// IF directory exists then only process.
+		else {
+			System.out.print("\n Directory doesn't exist.");
+			return null;
+		}
+		
+		return listOfFilesWordMatched;
+	}
+
+}

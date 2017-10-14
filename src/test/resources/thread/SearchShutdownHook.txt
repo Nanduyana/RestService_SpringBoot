@@ -1,0 +1,29 @@
+package com.search.words.directories.threads;
+
+import java.util.concurrent.ThreadPoolExecutor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class SearchShutdownHook extends Thread {
+	
+	private final Logger log = LoggerFactory.getLogger(this.getClass());	
+//Veda
+	private ThreadPoolExecutor executor;
+
+	public SearchShutdownHook(ThreadPoolExecutor executor) {
+		this.executor = executor;
+	}
+	
+	public void register() {
+        Runtime.getRuntime().addShutdownHook(this);
+        log.info("Shutdown hook for Message Dispatch Timer is registered.");
+    }
+	
+	@Override
+	public void run() {
+		log.info("Shutting down Message Dispatch Timer...");
+        executor.shutdownNow();
+	}
+
+}

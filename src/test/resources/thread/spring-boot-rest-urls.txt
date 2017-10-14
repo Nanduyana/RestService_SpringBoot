@@ -1,0 +1,15 @@
+http://websystique.com/spring-boot/spring-boot-rest-api-example/
+
+https://dzone.com/articles/spring-framework-restcontroller-vs-controller
+
+https://dzone.com/articles/introduction-to-spring-boot-rest-services
+
+https://www.genuitec.com/spring-frameworkrestcontroller-vs-controller/
+
+http://websystique.com/spring-boot/spring-boot-rest-api-example/
+
+https://www.mkyong.com/spring-boot/spring-boot-deploy-war-file-to-tomcat/ - springboot thymeleaf
+
+test
+
+Nandu
