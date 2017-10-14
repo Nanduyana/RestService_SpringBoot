@@ -6,7 +6,7 @@
 
 This is a sample Java / Maven / Spring Boot (version 1.5.6) application that can be used as a starter for creating a restservice.
 
-this service also tells us the time it takes to process the request
+this service also tells us the ```time it takes to process the request```
 
 ## How to Run 
 
