@@ -104,9 +104,4 @@ public class SearchControllerBeanTest{
 		}
 		
 	}
-	
-/*	@Test(expected=ValueNotFoundException.class)
-	public void testValueRequiredexceptionHandler(){
-		searchRestService.valueRequiredexceptionHandler(new ValueNotFoundException(""));
-	}*/
 }
