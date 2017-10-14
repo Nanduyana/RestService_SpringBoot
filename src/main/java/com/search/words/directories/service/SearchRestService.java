@@ -31,7 +31,7 @@ import com.search.words.directories.service.exception.ValueNotFoundException;
 @RestController
 public class SearchRestService {
 
-	public final Logger log = LoggerFactory.getLogger(this.getClass());
+	public static final Logger log = LoggerFactory.getLogger(SearchRestService.class);
 
 	@Autowired
 	SearchDirectories searchDirectories;
@@ -86,22 +86,6 @@ public class SearchRestService {
 		
 		log.debug("List of Keys :: {} List of Values {} Response View , {}",searchResponse.getWord(), searchResponse.getValues(),searchResponse.toString());
 		return searchResponse;
-	}
-	
-	@ExceptionHandler(ValueNotFoundException.class)
-	public ResponseEntity<ErrorResponse> valueRequiredexceptionHandler(Exception ex) {
-		ErrorResponse error = new ErrorResponse();
-		error.setErrorCode(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(ex.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.OK);
-	}
-	
-	@ExceptionHandler(DirectoryNotFoundException.class)
-	public ResponseEntity<ErrorResponse> directoryNotFoundexceptionHandler(Exception ex) {
-		ErrorResponse error = new ErrorResponse();
-		error.setErrorCode(HttpStatus.NOT_FOUND.value());
-		error.setMessage(ex.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 	
 }

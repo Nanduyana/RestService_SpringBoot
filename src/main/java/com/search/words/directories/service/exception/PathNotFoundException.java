@@ -1,5 +1,8 @@
 package com.search.words.directories.service.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 /**
  * This Custom Exception is referred when we dont pass the correct path 
  * string
@@ -7,6 +10,7 @@ package com.search.words.directories.service.exception;
  * @author IB1583
  *
  */
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class PathNotFoundException extends RuntimeException {
 
 	/**
