@@ -48,6 +48,10 @@ logs will be rolled out based on the size of the file given in logback.xml
 
 # https://github.com/Nanduyana/Spring-Boot.git - GitRepository
 
+# run for site generation 
+
+mvn site - this generates with test coverate report in target folder, we can deploy the same else where for remote access
+
 
 
 
