@@ -84,11 +84,7 @@ public class SearchRestService {
 		searchResponse.setWord(listOfWords);
 		searchResponse.setValues(wordsSearched);
 		
-		
-		log.debug("List of Keys :: {}",searchResponse.getWord());
-		log.debug("List of values :: {}",searchResponse.getValues());
-		
-		log.debug(" Search Response :: {}",searchResponse.toString());
+		log.debug("List of Keys :: {} List of Values {} Response View , {}",searchResponse.getWord(), searchResponse.getValues(),searchResponse.toString());
 		return searchResponse;
 	}
 	
