@@ -1,15 +1,10 @@
 package com.search.words.directories.exception.handler;
 
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.search.words.directories.error.ErrorResponse;
 import com.search.words.directories.service.SearchRestService;
 import com.search.words.directories.service.exception.DirectoryNotFoundException;
+import com.search.words.directories.service.exception.FileReadingException;
 import com.search.words.directories.service.exception.ValueNotFoundException;
 /**
  * 
@@ -60,11 +56,19 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 	
-	@ExceptionHandler({IllegalArgumentException.class, NullPointerException.class})
-	public ResponseEntity<ErrorResponse> handleBadRequests(HttpServletResponse response) throws IOException {
+	@ExceptionHandler({IllegalArgumentException.class})
+		public ResponseEntity<ErrorResponse> handleBadRequests(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
 		error.setErrorCode(HttpStatus.BAD_REQUEST .value());
-		error.setMessage("Invalid Request");
+		error.setMessage("Argument Not Allowed");
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler({FileReadingException.class})
+		public ResponseEntity<ErrorResponse> handleIOExceptionRequests(Exception ex) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.BAD_REQUEST .value());
+		error.setMessage(ex.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 }

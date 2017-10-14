@@ -1,5 +1,6 @@
 package com.search.words.directories.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.search.words.directories.interfaces.SearchDirectories;
 import com.search.words.directories.request.dto.SearchRequest;
 import com.search.words.directories.response.dto.SearchResponse;
 import com.search.words.directories.service.exception.DirectoryNotFoundException;
+import com.search.words.directories.service.exception.FileReadingException;
 import com.search.words.directories.service.exception.ValueNotFoundException;
 /**
  * This is the Rest Controller
@@ -43,10 +45,12 @@ public class SearchRestService {
 	 * This Rest Service is used to find out the words in the given Path (application.properties)
 	 * @param word
 	 * @return
+	 * @throws IOException  
+	 * @throws DirectoryNotFoundException 
 	 */
 	@RequestMapping(value = "/search/rest/directory" ,method = RequestMethod.POST, produces = "application/json", consumes= "application/json")
 	public SearchResponse getAllSearches(
-			@RequestBody SearchRequest search) {
+			@RequestBody SearchRequest search) throws FileReadingException {
 		
 		Map<String,List<String>> finalWordSearch = new HashMap<>();
 		String word = search.getWord();

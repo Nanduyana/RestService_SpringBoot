@@ -2,6 +2,7 @@ package com.search.words.directories.service.test;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.search.words.directories.SearchApplication;
 import com.search.words.directories.interfaces.SearchDirectories;
 import com.search.words.directories.service.SearchRestService;
 import com.search.words.directories.service.exception.DirectoryNotFoundException;
+import com.search.words.directories.service.exception.FileReadingException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SearchApplication.class})
@@ -65,9 +67,12 @@ public class SearchBeanTest{
 	/**
 	 * this test case is for GreenRoute.
 	 * to search the word in the given path with regExp "_"
+	 * @throws IOException 
+	 * @throws FileReadingException 
+	 * @throws DirectoryNotFoundException 
 	 */
 	@Test
-	public void testSearch() {
+	public void testSearch() throws DirectoryNotFoundException, FileReadingException, IOException {
 		Map<String, List<String>> finalMap=new HashMap<>();
 		Map<String, List<String>> search = searchDirectories.search("D:\\thread", "Nandu","_","txt",finalMap);
 		Assert.assertEquals(1,search.size());

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class PathNotFoundException extends RuntimeException {
+public class FileReadingException extends RuntimeException {
 
 	/**
 	 * @serialField
@@ -24,7 +24,7 @@ public class PathNotFoundException extends RuntimeException {
 		return errorMessage;
 	}
 
-	public PathNotFoundException(String errorMessage) {
+	public FileReadingException(String errorMessage) {
 		super(errorMessage);
 		this.errorMessage = errorMessage;
 	}
