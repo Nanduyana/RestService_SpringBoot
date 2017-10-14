@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.search.words.directories.interfaces.SearchDirectories;
+import com.search.words.directories.service.exception.DirectoryNotFoundException;
 import com.search.words.directories.service.exception.PathNotFoundException;
 import com.search.words.directories.service.exception.ValueNotFoundException;
 
@@ -39,17 +38,9 @@ public class SearchDirectoriesBean implements SearchDirectories{
 	 * @param wordToSearch
 	 * @return list of files that return the match with full path of the file
 	 */
-	public Map<String,List<String>> search(String path,String wordToSearch,String wordRegExp,String fileExtension,Map<String,List<String>> listOfFileswithWords) {
+	public Map<String,List<String>> search(String path,String wordToSearch,String wordRegExp,String fileExtension,Map<String,List<String>> listOfFileswithWords) throws DirectoryNotFoundException,PathNotFoundException{
 		log.debug("fileExtension:: {}--> path {}--> wordRegExp {}--->wordToSearch  {}--->", fileExtension, path, wordRegExp, wordToSearch);
-		
 		List<String> wordSearchedWithPath = new ArrayList<>();
-		if(path==null){
-			log.debug("Path is Required {}",path);
-			throw new PathNotFoundException("Path is Required to Search");
-		}else if(wordToSearch ==null){
-			log.debug("Word is Required {}",wordToSearch);
-			throw new ValueNotFoundException("Word is Required to Search");
-		}
 		
 		File filesDirectory = new File(path); // directory = target directory.
 		if (filesDirectory.exists()) // Directory exists then proceed.
@@ -82,7 +73,7 @@ public class SearchDirectoriesBean implements SearchDirectories{
 		}else{log.info("No Files in the directory {} ",filesDirectory.getName());}
 		}else {
 			log.info("\n Directory doesn't exist.");
-			return null;
+			throw new DirectoryNotFoundException("Directory Does not Exist, please provide a valid Directory");
 		}
 		log.debug("list of words that are added with paths ---> {}", listOfFileswithWords);
 		

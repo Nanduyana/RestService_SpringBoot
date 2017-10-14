@@ -21,6 +21,7 @@ import com.search.words.directories.error.ErrorResponse;
 import com.search.words.directories.interfaces.SearchDirectories;
 import com.search.words.directories.request.dto.SearchRequest;
 import com.search.words.directories.response.dto.SearchResponse;
+import com.search.words.directories.service.exception.DirectoryNotFoundException;
 import com.search.words.directories.service.exception.ValueNotFoundException;
 /**
  * This is the Rest Controller
@@ -99,6 +100,15 @@ public class SearchRestService {
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 	
+	
+	
+	@ExceptionHandler(DirectoryNotFoundException.class)
+	public ResponseEntity<ErrorResponse> directoryNotFoundexceptionHandler(Exception ex) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.NOT_FOUND.value());
+		error.setMessage(ex.getMessage());
+		return new ResponseEntity<>(error, HttpStatus.OK);
+	}
 	
 	
 }
