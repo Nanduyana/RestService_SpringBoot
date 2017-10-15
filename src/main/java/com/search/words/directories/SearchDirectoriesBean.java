@@ -75,7 +75,6 @@ public class SearchDirectoriesBean implements SearchDirectories{
 						    					log.debug("iterating ----------- > {} ",listOfFileswithWords);
 							                		break;
 							                }
-						    			buffered=null;
 						    		}
 							}else {
 										Files.lines(file.toPath()).forEach(line -> {	if(Pattern.compile(wordToSearch,Pattern.CASE_INSENSITIVE).matcher(line).find()){

@@ -9,10 +9,12 @@ import org.mockito.Mock;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 
 import com.search.words.directories.SearchApplication;
 import com.search.words.directories.error.ErrorResponse;
@@ -58,6 +60,30 @@ public class SearchControllerBeanTest{
 		ErrorResponse body = genericExceptionHandler.getBody();
 		Assert.assertEquals(500,body.getErrorCode());
 		Assert.assertEquals("Please Contact your Administrator",body.getMessage());
+	}
+	
+	@Test
+	public void testFileReadingException(){
+		ResponseEntity<ErrorResponse> genericExceptionHandler = exceptionAdvice.handleIOExceptionRequests(new Exception("Problem occured while processing file"));
+		ErrorResponse body = genericExceptionHandler.getBody();
+		Assert.assertEquals(400,body.getErrorCode());
+		Assert.assertEquals("Problem occured while processing file",body.getMessage());
+	}
+	
+	@Test
+	public void handleBadRequests(){
+		ResponseEntity<ErrorResponse> genericExceptionHandler = exceptionAdvice.handleBadRequests(new Exception("Argument Not Allowed"));
+		ErrorResponse body = genericExceptionHandler.getBody();
+		Assert.assertEquals(400,body.getErrorCode());
+		Assert.assertEquals("Argument Not Allowed",body.getMessage());
+	}
+	
+	@Test
+	public void directoryNotFoundexceptionHandler() {
+		ResponseEntity<ErrorResponse> genericExceptionHandler = exceptionAdvice.directoryNotFoundexceptionHandler(new Exception("Directory Does not Exist, please provide a valid Directory"));
+		ErrorResponse body = genericExceptionHandler.getBody();
+		Assert.assertEquals(404,body.getErrorCode());
+		Assert.assertEquals("Directory Does not Exist, please provide a valid Directory",body.getMessage());
 	}
 	
 	@Test
