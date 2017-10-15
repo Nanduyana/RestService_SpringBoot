@@ -1,6 +1,7 @@
 package com.search.words.directories;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.channels.FileChannel;
@@ -49,7 +50,6 @@ public class SearchDirectoriesBean implements SearchDirectories{
 		{log.debug("Directory Name :: {}--->{}",filesDirectory.listFiles());
 		if(filesDirectory.listFiles().length>0){		
 		for (File file : filesDirectory.listFiles()){
-					try{
 						log.debug("here file.toPath() {}",file.toPath());
 						String fileName = file.getName();
 						String fileAbsolutePath = file.getAbsolutePath();
@@ -57,17 +57,43 @@ public class SearchDirectoriesBean implements SearchDirectories{
 							search(fileAbsolutePath,wordToSearch,wordRegExp,fileExtension,listOfFileswithWords);//recursive call for checking the subdirectories
 						}
 						if (!file.isFile()) continue;
-						log.debug("File Name {}, File Size {} ", getFileSize(file),fileName);
-						if (fileName.substring(fileName.lastIndexOf('.') + 1).equals(fileExtension) && fileName.lastIndexOf('.') != -1) {
-							Files.lines(file.toPath()).forEach(line -> {	if(Pattern.compile(wordToSearch,Pattern.CASE_INSENSITIVE).matcher(line).find()){
-									log.debug("Adding {} to list :: ",fileAbsolutePath);
+						try {
+							long fileSize = getFileSize(file);
+							log.debug("File Name {}, File Size {} ",fileName,fileSize);
+							if(fileName.substring(fileName.lastIndexOf('.') + 1).equals(fileExtension) && fileName.lastIndexOf('.') != -1){
+								if(fileSize>100){
+									if(fileSize<1024){
+										fileSize = fileSize/8;
+									}else if(fileSize>1024){
+										fileSize = fileSize/10;
+									}
+									log.debug("file is more than 100MB {} ",fileName);
+									FileInputStream inputStream = new FileInputStream(fileAbsolutePath);
+									byte[] buffer = new byte[4096*20];//80MB being read at a time
+						    		int read = 0;
+						    		while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
+						    			log.debug("word to search {}", wordToSearch);
+						    			String buffered=new String(buffer);
+						    			if(buffered.contains(wordToSearch)){
+						    					log.debug("Adding {} to list :: ",fileAbsolutePath);
+						    					wordSearchedWithPath.add(fileAbsolutePath);
+						    					listOfFileswithWords.put(wordToSearch, wordSearchedWithPath);
+						    					log.debug("iterating ----------- > {} ",listOfFileswithWords);
+							                		break;
+							                }
+						    			buffered=null;
+						    		}
+							}else {
+										Files.lines(file.toPath()).forEach(line -> {	if(Pattern.compile(wordToSearch,Pattern.CASE_INSENSITIVE).matcher(line).find()){
+											log.debug("Adding {} to list :: ",fileAbsolutePath);
 												wordSearchedWithPath.add(fileAbsolutePath);
 												listOfFileswithWords.put(wordToSearch, wordSearchedWithPath);
 												log.debug("iterating ----------- > {} ",listOfFileswithWords);
 											 };
 										}); 
 								}
-						}catch (IOException e) {
+							}
+					}catch (IOException e) {
 							log.error("Problem occured while processing file :: {}", e.getMessage());
 							throw new FileReadingException("Problem occured while processing file");
 						}catch(UncheckedIOException ue){
@@ -75,7 +101,7 @@ public class SearchDirectoriesBean implements SearchDirectories{
 						}catch(Exception ex){
 							log.error("Exception occured :: {}", ex.getMessage());
 						}
-				}
+		}
 		}else{log.info("No Files in the directory {} ",filesDirectory.getName());}
 		}else {
 			log.info("\n Directory doesn't exist.");

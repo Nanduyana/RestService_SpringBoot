@@ -58,14 +58,14 @@ public class SearchRestService {
 		String regExp = search.getRegExp();
 		String fileExtension = search.getFileExtension();
 		
+		log.info("word {}, path {}, regExp {}, fileExtension {}",word,path,regExp,fileExtension);
 		//Here path and regExp is optional if not provided it will take the default values from application.properties file.
-		
 		if(word!=null && !word.isEmpty()){
 			log.debug("Word Obtained from Request :: {}", word);
 			path = (path==null) ? env.getProperty("path.to.search"):path;
 			log.debug("wordPath Obtained from Request :: {}", path);
 			regExp = (regExp==null) ? env.getProperty("reg.exp.search"): regExp; 
-			log.debug("Path Obtained from Request :: {}", regExp);
+			log.info("regExp Obtained from Request :: {}", regExp);
 			fileExtension= (fileExtension==null) ? env.getProperty("search.file.extension"): fileExtension;
 			
 			log.debug("Going to Search in File Extension :: {}", fileExtension);

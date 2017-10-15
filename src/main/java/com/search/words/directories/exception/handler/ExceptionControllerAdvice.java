@@ -3,13 +3,17 @@ package com.search.words.directories.exception.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.search.words.directories.error.ErrorResponse;
 import com.search.words.directories.service.SearchRestService;
 import com.search.words.directories.service.exception.DirectoryNotFoundException;
@@ -69,6 +73,17 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		ErrorResponse error = new ErrorResponse();
 		error.setErrorCode(HttpStatus.BAD_REQUEST .value());
 		error.setMessage(ex.getMessage());
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(
+			HttpMessageNotReadableException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.BAD_REQUEST .value());
+		error.setMessage("Not Able to Parse Json, please check the input provided");
+		super.handleHttpMessageNotReadable(ex, headers, status, request);
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 }

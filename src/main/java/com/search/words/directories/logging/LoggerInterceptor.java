@@ -60,7 +60,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
 
 		long executeTime = endTime - startTime;
 		
-		log.debug("request time :: {}", executeTime);
+		log.info("request time :: {}", executeTime);
 		
 		super.postHandle(request, response, handler, modelAndView);
 	}
