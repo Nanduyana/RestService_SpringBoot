@@ -1,6 +1,7 @@
-# Version ```0.0.1```
+# Version ```0.0.1``` Basic Search
+# Version ```0.0.2``` Search For Content in Large File as well
 
-# Version ```0.0.2-SNAPSHOT``` In_Progress
+# Version ```0.0.3-SNAPSHOT``` In_Progress
 
 # Spring "Restservice"
 
