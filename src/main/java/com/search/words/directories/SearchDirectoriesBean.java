@@ -63,7 +63,7 @@ public class SearchDirectoriesBean implements SearchDirectories{
 							if(fileName.substring(fileName.lastIndexOf('.') + 1).equals(fileExtension) && fileName.lastIndexOf('.') != -1){
 								if(fileSize>100){// checking if file is > 100 MB then read chunks of the file and check if the search string exist or not
 									log.debug("file is more than 100MB {} ",fileName);
-									byte[] buffer = new byte[4096*20];//80MB being read at a time
+									byte[] buffer = new byte[1024*80];//80MB being read at a time
 						    		int read = 0;
 						    		while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
 						    			log.debug("word to search {}", wordToSearch);
