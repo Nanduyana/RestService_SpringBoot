@@ -19,7 +19,7 @@ import com.search.words.directories.SearchDirectoriesBean;
 @Component("loggingInterceptor")
 public class LoggerInterceptor extends HandlerInterceptorAdapter{
 
-	public static final Logger log = LoggerFactory.getLogger(SearchDirectoriesBean.class);
+	public static final Logger log = LoggerFactory.getLogger(LoggerInterceptor.class);
 
 	static{
 		BasicConfigurator.configure();
@@ -30,24 +30,8 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter{
 			HttpServletResponse response, Object handler) throws Exception {
 		long startTime = System.currentTimeMillis();
 		request.setAttribute("startTime", startTime);
-		//logRequest(request);
 		return super.preHandle(request, response, handler);
 	}
-	
-	public void logRequest(HttpServletRequest request) throws IOException{
-		StringBuilder sb = new StringBuilder();
-		BufferedReader reader = request.getReader();
-	    try {
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            sb.append(line).append('\n');
-	        }
-	    } finally {
-	        reader.close();
-	    }
-	    log.info(sb.toString());
-	}
-	
 	
 	@Override
 	public void postHandle(HttpServletRequest request,
