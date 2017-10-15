@@ -7,10 +7,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -84,6 +86,18 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		error.setErrorCode(HttpStatus.BAD_REQUEST .value());
 		error.setMessage("Not Able to Parse Json, please check the input provided");
 		super.handleHttpMessageNotReadable(ex, headers, status, request);
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
+			HttpMediaTypeNotSupportedException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.BAD_REQUEST .value());
+		error.setMessage("Sorry, MediaType Not Supported");
+		super.handleHttpMediaTypeNotSupported(ex, headers, status, request);
+		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 }

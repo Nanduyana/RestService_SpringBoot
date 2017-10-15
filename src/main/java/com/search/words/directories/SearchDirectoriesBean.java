@@ -57,18 +57,12 @@ public class SearchDirectoriesBean implements SearchDirectories{
 							search(fileAbsolutePath,wordToSearch,wordRegExp,fileExtension,listOfFileswithWords);//recursive call for checking the subdirectories
 						}
 						if (!file.isFile()) continue;
-						try {
+						try (FileInputStream inputStream = new FileInputStream(fileAbsolutePath);){
 							long fileSize = getFileSize(file);
 							log.debug("File Name {}, File Size {} ",fileName,fileSize);
 							if(fileName.substring(fileName.lastIndexOf('.') + 1).equals(fileExtension) && fileName.lastIndexOf('.') != -1){
-								if(fileSize>100){
-									if(fileSize<1024){
-										fileSize = fileSize/8;
-									}else if(fileSize>1024){
-										fileSize = fileSize/10;
-									}
+								if(fileSize>100){// checking if file is > 100 MB then read chunks of the file and check if the search string exist or not
 									log.debug("file is more than 100MB {} ",fileName);
-									FileInputStream inputStream = new FileInputStream(fileAbsolutePath);
 									byte[] buffer = new byte[4096*20];//80MB being read at a time
 						    		int read = 0;
 						    		while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {

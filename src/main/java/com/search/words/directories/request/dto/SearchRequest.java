@@ -42,5 +42,10 @@ public class SearchRequest implements Serializable{
 	public void setPath(String path) {
 		this.path = path;
 	}
+	@Override
+	public String toString() {
+		return "SearchRequest [word=" + word + ", path=" + path + ", regExp="
+				+ regExp + ", fileExtension=" + fileExtension + "]";
+	}
 
 }
