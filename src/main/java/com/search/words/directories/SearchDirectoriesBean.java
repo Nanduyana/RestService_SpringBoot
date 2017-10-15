@@ -8,8 +8,11 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -21,7 +24,6 @@ import org.springframework.stereotype.Component;
 import com.search.words.directories.interfaces.SearchDirectories;
 import com.search.words.directories.service.exception.DirectoryNotFoundException;
 import com.search.words.directories.service.exception.FileReadingException;
-import com.search.words.directories.service.exception.ValueNotFoundException;
 
 /**
  * 
@@ -42,49 +44,57 @@ public class SearchDirectoriesBean implements SearchDirectories{
 	 * @return list of files that return the match with full path of the file
 	 */
 	public Map<String,List<String>> search(String path,String wordToSearch,String wordRegExp,String fileExtension,Map<String,List<String>> listOfFileswithWords) throws FileReadingException{
-		log.debug("fileExtension:: {}--> path {}--> wordRegExp {}--->wordToSearch  {}--->", fileExtension, path, wordRegExp, wordToSearch);
-		List<String> wordSearchedWithPath = new ArrayList<>();
+		log.info("fileExtension:: {}--> path {}--> wordRegExp {}--->wordToSearch  {}--->listOfFileswithWords {} ", fileExtension, path, wordRegExp, wordToSearch,listOfFileswithWords);
+		List<String> wordSearchedWithPath = listOfFileswithWords.get(wordToSearch);
+		if(wordSearchedWithPath==null){
+			wordSearchedWithPath = new ArrayList<>();
+		}
 		
 		File filesDirectory = new File(path); // directory = target directory.
 		if (filesDirectory.exists()) // Directory exists then proceed.
-		{log.debug("Directory Name :: {}--->{}",filesDirectory.listFiles());
+		{log.debug("Directory Name :: {} ",filesDirectory.listFiles());
 		if(filesDirectory.listFiles().length>0){		
 		for (File file : filesDirectory.listFiles()){
-						log.debug("here file.toPath() {}",file.toPath());
 						String fileName = file.getName();
+						log.info("here file.toPath() filePath {} fileName{}",file.toPath(),fileName );
 						String fileAbsolutePath = file.getAbsolutePath();
 						if (file.isDirectory()) {
+							log.info("Available in listOfFileswithWords size : {}",listOfFileswithWords.size());
 							search(fileAbsolutePath,wordToSearch,wordRegExp,fileExtension,listOfFileswithWords);//recursive call for checking the subdirectories
 						}
 						if (!file.isFile()) continue;
 						try (FileInputStream inputStream = new FileInputStream(fileAbsolutePath);){
 							long fileSize = getFileSize(file);
-							log.debug("File Name {}, File Size {} ",fileName,fileSize);
+							log.info("File Name {}, File Size {} ",fileName,fileSize);
 							if(fileName.substring(fileName.lastIndexOf('.') + 1).equals(fileExtension) && fileName.lastIndexOf('.') != -1){
-								if(fileSize>100){// checking if file is > 100 MB then read chunks of the file and check if the search string exist or not
-									log.debug("file is more than 100MB {} ",fileName);
-									byte[] buffer = new byte[1024*80];//80MB being read at a time
+								if((fileSize/(1024*1024))>100){// checking if file is > 100 MB then read chunks of the file and check if the search string exist or not
+									log.info("File is more than 100MB {} ",fileName);
+									int mb= 1024*80;// if we want to load 80 mb file at a time
+									byte[] buffer = new byte[mb];//80MB being read at a time
 						    		int read = 0;
+						    		log.info("Available listOfFileswithWords : {} ", listOfFileswithWords);
+						    		
 						    		while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
 						    			log.debug("word to search {}", wordToSearch);
 						    			String buffered=new String(buffer);
 						    			if(buffered.contains(wordToSearch)){
-						    					log.debug("Adding {} to list :: ",fileAbsolutePath);
+						    					log.info("Adding {} to list ",fileAbsolutePath);
 						    					wordSearchedWithPath.add(fileAbsolutePath);
 						    					listOfFileswithWords.put(wordToSearch, wordSearchedWithPath);
-						    					log.debug("iterating ----------- > {} ",listOfFileswithWords);
+						    					
+						    					log.info("total size of the map is :: {} ", listOfFileswithWords.size());
+						    					log.info("Iterating ----------- > {} ",listOfFileswithWords);
 							                		break;
 							                }
+						    			int availableBytes = inputStream.available();
+						    			log.debug("Next available bytes :: {}",availableBytes);
+						    			if(availableBytes<mb){
+						    				buffer = new byte[availableBytes];// this is to make sure we dont fill the array with default values if we dont have enough bytes to read
+						    			}
+						    			log.debug("Bytes still to be read {} ",(fileSize-read)); // do not enable this unless you are using the small file to test with 
+						    			log.debug("Next buffer size to read :: {} ",buffer.length);// enable this only for testing with small files
 						    		}
-							}else {
-										Files.lines(file.toPath()).forEach(line -> {	if(Pattern.compile(wordToSearch,Pattern.CASE_INSENSITIVE).matcher(line).find()){
-											log.debug("Adding {} to list :: ",fileAbsolutePath);
-												wordSearchedWithPath.add(fileAbsolutePath);
-												listOfFileswithWords.put(wordToSearch, wordSearchedWithPath);
-												log.debug("iterating ----------- > {} ",listOfFileswithWords);
-											 };
-										}); 
-								}
+							}log.info("list added to map ",listOfFileswithWords);
 							}
 					}catch (IOException e) {
 							log.error("Problem occured while processing file :: {}", e.getMessage());
@@ -95,17 +105,17 @@ public class SearchDirectoriesBean implements SearchDirectories{
 							log.error("Exception occured :: {}", ex.getMessage());
 						}
 		}
-		}else{log.info("No Files in the directory {} ",filesDirectory.getName());}
+		}else{log.debug("No Files in the directory {} ",filesDirectory.getName());}
 		}else {
 			log.info("\n Directory doesn't exist.");
 			throw new DirectoryNotFoundException("Directory Does not Exist, please provide a valid Directory");
 		}
-		log.debug("list of words that are added with paths ---> {}", listOfFileswithWords);
+		log.info("list of words that are added with paths ---> {}", listOfFileswithWords);
 		
 		return listOfFileswithWords;
 	}
 	
 	private static long getFileSize(File file) throws IOException {
-		return FileChannel.open(Paths.get(file.getAbsolutePath())).size()/(1024*1024);
+		return FileChannel.open(Paths.get(file.getAbsolutePath())).size();
 	}
 }
