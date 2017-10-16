@@ -49,7 +49,7 @@ public class SearchDirectoriesBean implements SearchDirectories{
 		if(wordSearchedWithPath==null){
 			wordSearchedWithPath = new ArrayList<>();
 		}
-		
+		log.info("Thread Name :: {}",Thread.currentThread().getName());
 		File filesDirectory = new File(path); // directory = target directory.
 		if (filesDirectory.exists()) // Directory exists then proceed.
 		{log.debug("Directory Name :: {} ",filesDirectory.listFiles());
@@ -60,7 +60,17 @@ public class SearchDirectoriesBean implements SearchDirectories{
 						String fileAbsolutePath = file.getAbsolutePath();
 						if (file.isDirectory()) {
 							log.info("Available in listOfFileswithWords size : {}",listOfFileswithWords.size());
-							search(fileAbsolutePath,wordToSearch,wordRegExp,fileExtension,listOfFileswithWords);//recursive call for checking the subdirectories
+							Runnable runnable = () -> {
+								 Thread.currentThread().setName(file.getName());
+								 	search(fileAbsolutePath,wordToSearch,wordRegExp,fileExtension,listOfFileswithWords);//recursive call for checking the subdirectories
+							 }; 
+							 Thread thread = new Thread(runnable);
+							 thread.start();
+							 try {
+								thread.join();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
 						}
 						if (!file.isFile()) continue;
 						try (FileInputStream inputStream = new FileInputStream(fileAbsolutePath);){
