@@ -60,17 +60,17 @@ public class SearchDirectoriesBean implements SearchDirectories{
 						String fileAbsolutePath = file.getAbsolutePath();
 						if (file.isDirectory()) {
 							log.info("Available in listOfFileswithWords size : {}",listOfFileswithWords.size());
-							Runnable runnable = () -> {
-								 Thread.currentThread().setName(file.getName());
+							//Runnable runnable = () -> {
+								 //Thread.currentThread().setName(file.getName());
 								 	search(fileAbsolutePath,wordToSearch,wordRegExp,fileExtension,listOfFileswithWords);//recursive call for checking the subdirectories
-							 }; 
-							 Thread thread = new Thread(runnable);
+							// }; 
+							 /*Thread thread = new Thread(runnable);
 							 thread.start();
 							 try {
 								thread.join();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
-							}
+							}*/
 						}
 						if (!file.isFile()) continue;
 						try (FileInputStream inputStream = new FileInputStream(fileAbsolutePath);){
