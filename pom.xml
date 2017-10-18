@@ -7,7 +7,7 @@
 	<artifactId>search-words-directories</artifactId>
 	<version>0.0.3-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<description>POC for word search in directories and subdirectories</description>
+	<description>Spring Boot Rest Service for SearchAPI</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -28,6 +28,7 @@
 	<properties>
 		<start-class>com.search.words.directories.SearchApplication</start-class>
 	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -111,13 +112,19 @@
 	</dependencies>
 
 	<build>
+	
+	
+	<resources>
+        <resource>
+            <filtering>true</filtering>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>application.properties</include>
+            </includes>
+        </resource>
+    </resources>
+	
 		<finalName>search-directories</finalName>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
