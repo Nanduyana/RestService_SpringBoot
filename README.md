@@ -48,6 +48,11 @@ java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dspring
 # Logging LogBack is used for this
 logs will be rolled out based on the size of the file given in logback.xml
 
+# Actuators 
+
+http://localhost:8190/health
+http://localhost:8190/info
+
 # https://github.com/Nanduyana/Spring-Boot.git - GitRepository
 
 # run for site generation 
