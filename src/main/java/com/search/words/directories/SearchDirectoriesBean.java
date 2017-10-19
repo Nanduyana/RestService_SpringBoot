@@ -55,40 +55,29 @@ public class SearchDirectoriesBean implements SearchDirectories{
 						String fileAbsolutePath = file.getAbsolutePath();
 						if (file.isDirectory()) {
 							log.info("Available in listOfFileswithWords size : {}",listOfFileswithWords.size());
-							//Runnable runnable = () -> {
-								 //Thread.currentThread().setName(file.getName());
 								 	search(fileAbsolutePath,wordToSearch,wordRegExp,fileExtension,listOfFileswithWords);//recursive call for checking the subdirectories
-							// }; 
-							 /*Thread thread = new Thread(runnable);
-							 thread.start();
-							 try {
-								thread.join();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}*/
 						}
 						if (!file.isFile()) continue;
 						try (FileInputStream inputStream = new FileInputStream(fileAbsolutePath);){
 							long fileSize = getFileSize(file);
 							log.info("File Name {}, File Size {} ",fileName,fileSize);
 							if(fileName.substring(fileName.lastIndexOf('.') + 1).equals(fileExtension) && fileName.lastIndexOf('.') != -1){
-								if((fileSize/(1024*1024))>100){// checking if file is > 100 MB then read chunks of the file and check if the search string exist or not
-									log.info("File is more than 100MB {} ",fileName);
+								//if((fileSize/(1024*1024))>100){// Enable if you really want to read a file more than 100MB checking if file is > 100 MB then read chunks of the file and check if the search string exist or not
+									log.debug("File is more than 100MB {} ",fileName);
 									int mb= 1024*80;// if we want to load 80 mb file at a time
 									byte[] buffer = new byte[mb];//80MB being read at a time
 						    		int read = 0;
-						    		log.info("Available listOfFileswithWords : {} ", listOfFileswithWords);
+						    		log.debug("Available listOfFileswithWords : {} ", listOfFileswithWords);
 						    		
 						    		while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
 						    			log.debug("word to search {}", wordToSearch);
 						    			String buffered=new String(buffer);
 						    			if(buffered.contains(wordToSearch)){
-						    					log.info("Adding {} to list ",fileAbsolutePath);
+						    					log.debug("Adding {} to list ",fileAbsolutePath);
 						    					wordSearchedWithPath.add(fileAbsolutePath);
 						    					listOfFileswithWords.put(wordToSearch, wordSearchedWithPath);
-						    					
-						    					log.info("total size of the map is :: {} ", listOfFileswithWords.size());
-						    					log.info("Iterating ----------- > {} ",listOfFileswithWords);
+						    					log.debug("total size of the map is :: {} ", listOfFileswithWords.size());
+						    					log.debug("Iterating ----------- > {} ",listOfFileswithWords);
 							                		break;
 							                }
 						    			int availableBytes = inputStream.available();
@@ -99,7 +88,8 @@ public class SearchDirectoriesBean implements SearchDirectories{
 						    			log.debug("Bytes still to be read {} ",(fileSize-read)); // do not enable this unless you are using the small file to test with 
 						    			log.debug("Next buffer size to read :: {} ",buffer.length);// enable this only for testing with small files
 						    		}
-							}log.info("list added to map ",listOfFileswithWords);
+							//}
+							log.info("list added to map ",listOfFileswithWords);
 							}
 					}catch (IOException e) {
 							log.error("Problem occured while processing file :: {}", e.getMessage());

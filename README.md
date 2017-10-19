@@ -10,6 +10,21 @@ This is a sample Java / Maven / Spring Boot (version 1.5.6) application that can
 
 this service also tells us the ```time it takes to process the request```
 
+# Exceptions handled
+
+ 1. ValueNotFoundException
+ 2. DirectoryNotFoundException
+ 3. IllegalArgumentException
+ 4. FileReadingException
+ 5. Json parsing Exception
+ 6. Request Method Type
+ 7. Media Type Support
+
+# Testing
+To Test Large files put them in a directory and give the path in application.properties ```file path.to.search```
+
+the ``` Logging Interceptor``` configured here will give you the time took to read the file
+
 ## How to Run 
 
 This application is packaged as a war which has Tomcat 8 embedded. No Tomcat or JBoss installation is necessary. You can run it using the ```java -jar``` command by passing the war file
