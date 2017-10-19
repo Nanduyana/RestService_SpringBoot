@@ -45,6 +45,11 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	/**
+	 * this method handles if no input is given in the request 
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(ValueNotFoundException.class)
 	public ResponseEntity<ErrorResponse> valueRequiredexceptionHandler(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
@@ -53,6 +58,11 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 	
+	/**
+	 * This method handles exception thrown when the provided directory for search is not available
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler(DirectoryNotFoundException.class)
 	public ResponseEntity<ErrorResponse> directoryNotFoundexceptionHandler(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
@@ -61,6 +71,11 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
 	
+	/**
+	 * this exception handler is for Illegal Argument Exception for any inputs wrongly given
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler({IllegalArgumentException.class})
 		public ResponseEntity<ErrorResponse> handleBadRequests(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
@@ -69,6 +84,11 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * This exception handler handles the exceptions if there is any problem in reading the file
+	 * @param ex
+	 * @return
+	 */
 	@ExceptionHandler({FileReadingException.class})
 		public ResponseEntity<ErrorResponse> handleIOExceptionRequests(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
@@ -77,6 +97,9 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * this overridden method handles if the request Json is not Parsable
+	 */
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(
 			HttpMessageNotReadableException ex, HttpHeaders headers,
@@ -88,6 +111,9 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * This exception handler which is overridden handles if Request Method is Not Supported
+	 */
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
 			HttpRequestMethodNotSupportedException ex, HttpHeaders headers,
@@ -99,6 +125,9 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(error, HttpStatus.METHOD_NOT_ALLOWED);
 	}
 	
+	/**
+	 * This exception handler method which is overridden handles MediaType if not Supported by the service
+	 */
 	@Override
 	protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
 			HttpMediaTypeNotSupportedException ex, HttpHeaders headers,
