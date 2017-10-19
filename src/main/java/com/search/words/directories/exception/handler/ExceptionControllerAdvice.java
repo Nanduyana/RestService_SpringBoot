@@ -8,14 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.search.words.directories.error.ErrorResponse;
 import com.search.words.directories.service.SearchRestService;
 import com.search.words.directories.service.exception.DirectoryNotFoundException;
@@ -87,6 +86,17 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		error.setMessage("Not Able to Parse Json, please check the input provided");
 		super.handleHttpMessageNotReadable(ex, headers, status, request);
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(
+			HttpRequestMethodNotSupportedException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(HttpStatus.METHOD_NOT_ALLOWED .value());
+		error.setMessage("Please check the Request Method Type ");
+		super.handleHttpRequestMethodNotSupported(ex, headers, status, request);
+		return new ResponseEntity<>(error, HttpStatus.METHOD_NOT_ALLOWED);
 	}
 	
 	@Override

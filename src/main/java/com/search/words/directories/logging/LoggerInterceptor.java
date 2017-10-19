@@ -1,9 +1,5 @@
 package com.search.words.directories.logging;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import com.search.words.directories.SearchDirectoriesBean;
 
 @Component("loggingInterceptor")
 public class LoggerInterceptor extends HandlerInterceptorAdapter{
