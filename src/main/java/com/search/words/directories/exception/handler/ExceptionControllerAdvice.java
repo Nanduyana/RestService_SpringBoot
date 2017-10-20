@@ -16,7 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.search.words.directories.error.ErrorResponse;
-import com.search.words.directories.service.SearchRestService;
+import com.search.words.directories.rest.service.SearchRestService;
 import com.search.words.directories.service.exception.DirectoryNotFoundException;
 import com.search.words.directories.service.exception.FileReadingException;
 import com.search.words.directories.service.exception.ValueNotFoundException;

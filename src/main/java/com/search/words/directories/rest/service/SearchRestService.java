@@ -1,4 +1,4 @@
-package com.search.words.directories.service;
+package com.search.words.directories.rest.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,6 +85,7 @@ public class SearchRestService {
 		searchResponse.setValues(wordsSearched);
 		
 		log.debug("List of Keys :: {} List of Values {} Response View , {}",searchResponse.getWord(), searchResponse.getValues(),searchResponse.toString());
+		log.info("i am completing the request");
 		return searchResponse;
 	}
 	
