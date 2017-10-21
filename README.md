@@ -4,9 +4,9 @@ Version ```0.0.1``` Basic Search
 Version ```0.0.2``` Search For Content in Large File as well
 Version ```0.0.3-SNAPSHOT``` In_Progress
 
-# Spring "Restservice"
+# Spring Boot "Restservice" Async/Non-Async
 
-This is a sample Java / Maven / Spring Boot (version 1.5.6) application that can be used as a starter for creating a restservice.
+This is a sample Java / Maven / Spring Boot (version 1.5.6) application that can be used as a starter for creating a RestService.
 
 this service also tells us the ```time it takes to process the request```
 
@@ -44,9 +44,10 @@ this service returns you the list of filenames and paths that are available in t
 ### Get information about service.
 
 ```
-http://localhost:8090/welcome
-http://localhost:8091/search/rest/directory?word=Nandu - searches the word Nandu in the given directory
-http://localhost:8091/search/rest/directory?word=Test_Nandu - this searches the words Test and Nandu in the given directory.
+http://localhost:8090/info
+http://localhost:8090/health
+http://localhost:8091/search/rest/directory - Normal Search
+http://localhost:8091/search/ - Async Search
 ```
 for any changes in the searching with respect to words from ```_``` to ``` ``` (space) we can change in application.properties file 
 

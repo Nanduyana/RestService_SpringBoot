@@ -80,7 +80,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler{
 		public ResponseEntity<ErrorResponse> handleBadRequests(Exception ex) {
 		ErrorResponse error = new ErrorResponse();
 		error.setErrorCode(HttpStatus.BAD_REQUEST .value());
-		error.setMessage("Argument Not Allowed");
+		error.setMessage("Argument is Required");
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 	
