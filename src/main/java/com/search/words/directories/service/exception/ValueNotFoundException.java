@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * This Custom Exception is referred when we dont pass a value in the query
  * string
  * 
- * @author IB1583
+ * @author Nandu Yenagandula
  *
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)

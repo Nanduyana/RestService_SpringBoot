@@ -30,6 +30,7 @@ public class SearchResponse implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SearchResponse [values=" + values + "]";
+		return "SearchResponse [word=" + word + ", values=" + values + "]";
 	}
+
 }

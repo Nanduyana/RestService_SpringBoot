@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,17 +29,18 @@ import com.search.words.directories.request.dto.SearchRequest;
 import com.search.words.directories.service.exception.ValueNotFoundException;
 
 /**
- * This is the Rest Controller
- * @author IB1583
+ * This is the Rest Controller where the request begins from
+ * @author Nandu Yenagandula
  *
  */
 @RestController
+@ComponentScan(basePackages={"com.search.words.*"})
 public class AsyncSearchAPIRestService {
 
 	public static final Logger log = LoggerFactory.getLogger(AsyncSearchAPIRestService.class);
 
-	@Resource
-	private AsyncSearchService searchAPI;
+	@Autowired
+	private AsyncSearchService asyncSearchService;
 
 	@Autowired
 	private Environment env;
@@ -87,7 +89,7 @@ public class AsyncSearchAPIRestService {
 				log.info("Searching for word :: {}",wordToSearch);
 				for(int i=0;i<listSubfolders.size();i++){
 					if(listSubfolders.get(i).listFiles()!=null){
-						futures.add(searchAPI.searchFiles(wordToSearch,listSubfolders.get(i)));
+						futures.add(asyncSearchService.searchFiles(wordToSearch,listSubfolders.get(i)));
 					}
 				}
 			}

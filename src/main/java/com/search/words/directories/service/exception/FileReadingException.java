@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * This Custom Exception is referred when we dont pass the correct path 
  * string
  * 
- * @author IB1583
+ * @author Nandu Yenagandula
  *
  */
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 public class FileReadingException extends RuntimeException {
 
 	/**

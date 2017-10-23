@@ -18,6 +18,17 @@ public class SearchRequest implements Serializable{
 	private String regExp;
 	private String fileExtension;
 	
+	public SearchRequest() {
+	}
+	public SearchRequest(String word, String path, String regExp,
+			String fileExtension) {
+		super();
+		this.word = word;
+		this.path = path;
+		this.regExp = regExp;
+		this.fileExtension = fileExtension;
+	}
+	
 	public String getFileExtension() {
 		return fileExtension;
 	}

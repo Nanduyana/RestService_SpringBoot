@@ -3,6 +3,11 @@ package com.search.words.directories.service.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * This Exception class is thrown when Directory provided as input is not found
+ * @author Nandu Yenagandula
+ *
+ */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class DirectoryNotFoundException extends RuntimeException{
 	/**

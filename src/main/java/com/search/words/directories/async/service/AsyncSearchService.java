@@ -1,9 +1,7 @@
 package com.search.words.directories.async.service;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.channels.FileChannel;
@@ -20,11 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.search.words.directories.service.exception.FileReadingException;
 
-@Service
+@Component(value="asyncSearchService")
 public class AsyncSearchService {
 
 	public static final Logger log = LoggerFactory.getLogger(AsyncSearchService.class);
