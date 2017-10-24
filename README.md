@@ -2,7 +2,7 @@
 
 Version ```0.0.1``` Basic Search
 Version ```0.0.2``` Search For Content in Large File as well
-Version ```0.0.3-SNAPSHOT``` In_Progress
+Version ```0.0.3-SNAPSHOT``` Testing_In_Progress
 
 # Spring Boot "Restservice" Async/Non-Async
 
@@ -48,6 +48,26 @@ http://localhost:8090/info
 http://localhost:8090/health
 http://localhost:8091/search/rest/directory - Normal Search
 http://localhost:8091/search/ - Async Search
+http://localhost:8190/lucene/search/ - For Search Using Lucene
+
+```Sample Request```
+```{```
+	```"word":"NanduSrDeveloper",```
+	```"path":"D:\\180-files"```
+```}```
+
+```Sample Response```
+```{```
+    ```"NanduSrDeveloper": [```
+        ```"D:\\180-files\\1.txt",```
+        ```"D:\\180-files\\2.txt",```
+        ```"D:\\180-files\\3.txt",```
+        ```"D:\\180-files\\4.txt",```
+        ```"D:\\180-files\\5.txt"```
+    ```]```
+```}```
+
+
 ```
 for any changes in the searching with respect to words from ```_``` to ``` ``` (space) we can change in application.properties file 
 

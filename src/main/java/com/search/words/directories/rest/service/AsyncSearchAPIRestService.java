@@ -48,6 +48,13 @@ public class AsyncSearchAPIRestService {
 	@Autowired
 	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
+	/**
+	 * Multithreaded approach for searching the files
+	 * @param search
+	 * @return
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 */
 	@RequestMapping(value="/search", produces="application/json", consumes= "application/json",method=RequestMethod.POST)
 	public Map<String,List<String>> taskExecutor(@RequestBody SearchRequest search) throws InterruptedException, ExecutionException{
 		log.info("free Memory Available in Mbytes at Startup--> {} ",Runtime.getRuntime().freeMemory()/(1024*1024));
@@ -68,6 +75,7 @@ public class AsyncSearchAPIRestService {
 		
 		String pathValidated=(path==null) ? env.getProperty("path.to.search"):path;
 		File parentDirectory=new File(pathValidated);
+		
 		List<File> listSubfolders = listSubfolders(pathValidated,listOfFiles);
 		listSubfolders.add(parentDirectory);
 		

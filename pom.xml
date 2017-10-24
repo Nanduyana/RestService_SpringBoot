@@ -27,6 +27,7 @@
 
 	<properties>
 		<start-class>com.search.words.directories.SearchApplication</start-class>
+		<lucene.version>3.6.0</lucene.version>
 	</properties>
 	
 	<dependencies>
@@ -110,6 +111,33 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>${lucene.version}</version>
+		</dependency> -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<!-- To include highlight support -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-highlighter</artifactId>
+			<version>${lucene.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.lucene</groupId>
+		    <artifactId>lucene-facet</artifactId>
+		    <version>${lucene.version}</version>
 		</dependency>
 
 
@@ -308,4 +336,20 @@
 			</build>
 		</profile>
 	</profiles>
+	
+	<!-- 
+	Configure repository here if you have one 
+	<pluginRepositories>
+	<pluginRepository>
+		<id>Id Name</id>
+		<name>Local Maven repository of releases</name>
+		<url>http://hostname/svn/maven2/releases</url>
+		<snapshots>
+			<enabled>false</enabled>
+		</snapshots>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+	</pluginRepository>
+</pluginRepositories> -->
 </project>
