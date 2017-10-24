@@ -4,6 +4,12 @@ Version ```0.0.1``` Basic Search
 Version ```0.0.2``` Search For Content in Large File as well
 Version ```0.0.3-SNAPSHOT``` Testing_In_Progress
 
+This contains the three flavours of Search
+
+ 1. Single Thread
+ 2. Multi Thread
+ 3. With Apache Lucene.
+
 # Spring Boot "Restservice" Async/Non-Async
 
 This is a sample Java / Maven / Spring Boot (version 1.5.6) application that can be used as a starter for creating a RestService.
